@@ -41,28 +41,4 @@ const login = async (email, password) => {
     return { error: false, message: 'success', loginResult };
 };
 
-const updateUser = async (userId, name, password) => {
-    const userDoc = await usersCollection.doc(userId).get();
-    if (!userDoc.exists) {
-        throw new Error('User not found!');
-    }
-
-    const updates = {};
-    if (name) {
-        updates.name = name;
-    }
-    if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        updates.password = hashedPassword;
-    }
-
-    if (Object.keys(updates).length === 0) {
-        throw new Error('No updates provided');
-    }
-
-    await usersCollection.doc(userId).update(updates);
-
-    return { message: 'User updated successfully!' };
-};
-
-module.exports = { register, login, updateUser };
+module.exports = { register, login };
