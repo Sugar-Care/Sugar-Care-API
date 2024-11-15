@@ -40,15 +40,4 @@ const login = async (request, h) => {
     }
 };
 
-const updateUser = async (request, h) => {
-    const { userId } = request.params;
-    const { name, password } = request.payload;
-    try {
-        const result = await userService.updateUser(userId, name, password);
-        return h.response({ error: false, message: "User updated successfully!", result }).code(200);
-    } catch (error) {
-        return h.response({ error: true, message: error.message }).code(400);
-    }
-};
-
-module.exports = {register,login,updateUser};
+module.exports = {register,login};
