@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
-CMD ["node","run","start-prod"]
+CMD ["npm","run","start-prod"]
