@@ -2,7 +2,7 @@
 FROM node:20.9.0
 
 # Create and set the working directory
-WORKDIR /.
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
-CMD ["node", "run","start"]
+CMD ["node","run","start"]
