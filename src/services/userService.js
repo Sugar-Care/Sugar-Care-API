@@ -6,6 +6,7 @@ const usersCollection = firestore.collection('users');
 
 const register = async (name, email, password) => {
     const userDoc = await usersCollection.doc(email).get();
+
     if (userDoc.exists) {
         throw new Error('User already exists');
     }
@@ -20,12 +21,14 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const login = async (email, password) => {
     const userDoc = await usersCollection.doc(email).get();
+
     if (!userDoc.exists) {
         return { error: true, message: 'Invalid email or password', loginResult: null };
     }
 
     const user = userDoc.data();
     const isValid = await bcrypt.compare(password, user.password);
+
     if (!isValid) {
         return { error: true, message: 'Invalid email or password', loginResult: null };
     }
@@ -37,6 +40,7 @@ const login = async (email, password) => {
         email: user.email,
         token: token
     };
+    
     return { error: false, message: 'success', loginResult };
 };
 
