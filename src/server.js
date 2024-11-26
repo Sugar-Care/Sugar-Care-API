@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const hapiRateLimit = require('hapi-rate-limit');
 const routes = require('./routes/allRoutes');
 const { firestore } = require('./firestore');
 
@@ -16,10 +17,32 @@ const init = async () => {
             },
           },
     });
- 
-    server.route(routes);
-    
+
+    server.register({
+      plugin: hapiRateLimit,
+      options: {
+        enabled: true, // Enable rate limiting
+        userLimit: 300, // Number of requests per user per period
+        userCache: {
+          expiresIn: 600000, // Time period in milliseconds
+          segment: 'hapi-rate-limit-user'
+        },
+        pathLimit: 2, // Number of requests per path per period
+        pathCache: {
+          expiresIn: 6000, // Time period in milliseconds
+          segment: 'hapi-rate-limit-path'
+        },
+        headers: true, // Include headers in responses
+        ipWhitelist: [], // Array of IPs to whitelist
+        trustProxy: false, // Whether to honor the X-Forwarded-For header
+        getIpFromProxyHeader: undefined, // Function to extract remote address from X-Forwarded-For header
+        limitExceededResponse: (request, h) => { return h.response({ message: 'Rate limit exceeded' }).code(429).takeover();
+        }
+      }
+    });
+
     await server.register(Jwt);
+
     server.auth.strategy('jwt', 'jwt', {
       keys: process.env.JWT_SECRET,
       verify: {
@@ -40,7 +63,10 @@ const init = async () => {
         return { isValid: true, credentials: { user } };
       }
     });
+
     server.auth.default('jwt');
+
+    server.route(routes);
 
     await server.start();
     console.log(`Server berjalan pada ${server.info.uri}`);
