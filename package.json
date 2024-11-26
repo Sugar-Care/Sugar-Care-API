@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
     "start-dev": "nodemon ./src/server.js",
-    "start-prod": "NODE_ENV=production node ./src/server.js"
+    "start-prod": "set NODE_ENV=production && node ./src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
+    "hapi-rate-limit": "^7.1.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2"
   },
