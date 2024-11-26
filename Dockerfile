@@ -16,5 +16,8 @@ COPY . .
 # Expose the port that your Hapi.js app will run on
 EXPOSE 5000
 
+# Set environment variables 
+ENV NODE_ENV=production
+
 # Start the application
-CMD ["npm","run","start-prod"]
+CMD ["npm","run","start"]
