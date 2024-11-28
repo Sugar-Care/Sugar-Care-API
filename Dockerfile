@@ -1,20 +1,15 @@
-# Use the official Node.js image as the base image
-FROM node:20.9.0
+FROM python:3.10-slim
 
-# Create and set the working directory
-WORKDIR /usr/src/app
+ENV PYTHONUNBUFFERED True
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+ENV APP_HOME /app
 
-# Install dependencies
-RUN npm install
+ENV PORT 5000
 
-# Copy the rest of the application code
-COPY . .
+WORKDIR $APP_HOME
 
-# Expose the port that your Hapi.js app will run on
-EXPOSE 5000
+COPY . ./
 
-# Start the application
-CMD ["npm","run","start"]
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
