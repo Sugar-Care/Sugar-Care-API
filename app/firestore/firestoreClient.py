@@ -1,7 +1,7 @@
 from google.cloud import firestore
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "Suca-key.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "Suca-key.json"
 
 db = firestore.Client()
 
