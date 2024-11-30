@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { firestore } = require('../firestore');
 
 const usersCollection = firestore.collection('users');
+const jwtSecret = process.env.JWT_SECRET;
 
 const register = async (name, email, password) => {
     const userDoc = await usersCollection.doc(email).get();
@@ -12,12 +13,14 @@ const register = async (name, email, password) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await usersCollection.doc(email).set({ name, email, password: hashedPassword });
+    await usersCollection.doc(email).set({ 
+        name, 
+        email, 
+        password: hashedPassword 
+    });
 
     return { message: 'User registered successfully' };
 };
-
-const jwtSecret = process.env.JWT_SECRET;
 
 const login = async (email, password) => {
     const userDoc = await usersCollection.doc(email).get();

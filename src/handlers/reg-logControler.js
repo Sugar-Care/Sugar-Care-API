@@ -1,4 +1,4 @@
-const { registerSchema, loginSchema } = require('../models');
+const { registerSchema, loginSchema } = require('../validators');
 const userService = require('../services/userService');
 
 const register = async (request, h) => {

@@ -1,7 +1,9 @@
+const { predictionRoutes } = require("./predictionRoute.js");
 const { reqLogRoutes } = require("./reg-logRoute");
 
 const routes = [
-    ...reqLogRoutes
+    ...reqLogRoutes,
+    ...predictionRoutes
 ];
 
 module.exports = routes;

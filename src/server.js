@@ -66,7 +66,7 @@ const init = async () => {
 
     const swaggerOptions = {
       info: {
-          title: 'Test API Documentation',
+          title: 'SUCA API Documentation',
           version: Pack.version
       }, 
       documentationPath: '/suca-docs',
