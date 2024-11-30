@@ -14,7 +14,9 @@
   "dependencies": {
     "@google-cloud/firestore": "^7.10.0",
     "@hapi/hapi": "^21.3.12",
-    "@hapi/joi": "^17.1.1",
+    "hapi-swagger": "^17.3.0",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
     "@hapi/jwt": "^3.2.0",
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
