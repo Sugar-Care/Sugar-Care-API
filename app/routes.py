@@ -1,18 +1,31 @@
 from flask import Blueprint, jsonify, request
-from .models.inference import inference
-from .firestore.firestoreClient import storeData
+import requests
+from .inference import inference
 
 main = Blueprint('main', __name__)
 
 @main.route('/prediction', methods=['POST'])
 def infer():
     data = request.get_json()
-    inputData = [data[x] for x in data]
+    inputData = [data["input"][x] for x in data["input"]]
 
     predictLabel,predictProb = inference(inputData)
 
-    result = {"Label":predictLabel,"Probability":predictProb}
+    result = {
+        "email":data["email"],
+        "input":data["input"],
+        "prediction":{
+            "label":predictLabel,
+            "probability":predictProb
+        }
+    }
 
-    storeData(result)
-
-    return jsonify({'result': result}), 201
+    #storeData
+    response = requests.post("https://sugar-care-api-database-510866273403.asia-southeast2.run.app/prediction", json=result)
+    return jsonify({
+        "result": {
+            "label":predictLabel,
+            "probability":predictProb,
+            "message":response.json()
+        }
+    }), 201

@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, Response, g, request
+from .routes import main
 import uuid
 import json
 import time
@@ -37,8 +38,6 @@ def create_app():
             response.set_data(json.dumps(data))
 
         return response
-
-    from .routes import main
 
     app.register_blueprint(main)
 
