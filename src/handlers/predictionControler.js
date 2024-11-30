@@ -9,9 +9,9 @@ exports.postPrediction = async (request, h) => {
             throw new Error(error);
         }
 
-        const message = await storePrediction(request.payload);
+        const res = await storePrediction(request.payload);
 
-        return h.response({ message }).code(200);
+        return h.response({ message:res.message }).code(200);
     } catch (err) {
         return h.response({ error: err.message }).code(400);
     }

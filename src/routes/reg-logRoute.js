@@ -1,5 +1,5 @@
 const userHandler = require('../handlers/reg-logControler');
-const { registerSchema, loginSchema } = require('../validators');
+const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema } = require('../validators');
 
 exports.reqLogRoutes = [
     {
@@ -12,6 +12,16 @@ exports.reqLogRoutes = [
             tags: ['api'],
             validate: {
                 payload: registerSchema
+            },
+            plugins: {
+                'hapi-swagger': {
+                    responses: {
+                        200: {
+                            description: 'Berhasil',
+                            schema: registerResponseSchema
+                        }
+                    }
+                }
             },
             handler: userHandler.register
         }
@@ -26,6 +36,16 @@ exports.reqLogRoutes = [
             tags: ['api'],
             validate: {
                 payload: loginSchema
+            },
+            plugins: {
+                'hapi-swagger': {
+                    responses: {
+                        200: {
+                            description: 'Berhasil',
+                            schema: loginResponseSchema
+                        }
+                    }
+                }
             },
             handler: userHandler.login
         }

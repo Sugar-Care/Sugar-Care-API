@@ -5,11 +5,23 @@ exports.registerSchema = Joi.object({
     email: Joi.string().email().required().description('Email address of the user').example('john_doe@example.com'),
     password: Joi.string().min(6).required().description('Password for the user').example('secret123')
 });
+exports.registerResponseSchema = Joi.object({
+    message: Joi.string()
+}).label('Result');
 
 exports.loginSchema = Joi.object({
     email: Joi.string().email().required().description('Email address of the user').example('john_doe@example.com'),
     password: Joi.string().min(6).required().description('Password for the user').example('secret123')
 });
+exports.loginResponseSchema = Joi.object({
+    error: Joi.string(),
+    message: Joi.string(),
+    loginResult: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        token: Joi.string()
+    })
+}).label('Result');
 
 exports.predictionSchema = Joi.object({
     email:Joi.string().email().required().description('Email address of the user').example('john_doe@example.com'),
@@ -30,3 +42,6 @@ exports.predictionSchema = Joi.object({
         probability:Joi.number().required().description('Probability of prediction').example('99.9')
     })
 });
+exports.predictionResponseSchema = Joi.object({
+    message: Joi.string()
+}).label('Result');
