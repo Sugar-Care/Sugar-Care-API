@@ -1,5 +1,5 @@
 const { postPrediction, getPredictions } = require('../handlers/predictionControler');
-const { predictionResponseSchema, postPredictionParamSchema, postPredictionSchema } = require('../validators');
+const { postPredictionParamSchema, postPredictionSchema, postPredictionResponseSchema, getPredictionParamSchema, getPredictionResponseSchema } = require('../validators');
 
 exports.predictionRoutes = [
     {
@@ -20,7 +20,7 @@ exports.predictionRoutes = [
                     responses: {
                         200: {
                             description: 'Berhasil',
-                            schema: predictionResponseSchema
+                            schema: postPredictionResponseSchema
                         }
                     }
                 }
@@ -36,9 +36,18 @@ exports.predictionRoutes = [
             description: 'Prediction',
             notes: 'GET Predictions from database',
             tags: ['api','prediction'],
+            validate: {
+                params: getPredictionParamSchema
+            },
             plugins: {
                 'hapi-swagger': {
-                    order:1
+                    order:1,
+                    responses: {
+                        200: {
+                            description: 'Berhasil',
+                            schema: getPredictionResponseSchema
+                        }
+                    }
                 }
             },
             handler: getPredictions

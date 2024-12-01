@@ -47,32 +47,67 @@ exports.postPredictionSchema = Joi.object({
 exports.postPredictionParamSchema = Joi.object({
     id: Joi.string()
 });
-exports.postPpredictionResponseSchema = Joi.object({
+exports.postPredictionResponseSchema = Joi.object({
     message: Joi.string()
 }).label('Result');
 
 // Get Predictions
-exports.getPredictionSchema = Joi.object({
-    input:Joi.object({
-        age:Joi.number().required().description('Age').example('44'), 
-        bloodGlucoseLevels:Joi.number().required().description('Blood Glucose Levels').example('168'), 
-        bloodPressure:Joi.number().required().description('Blood Pressure').example('124'), 
-        weightGainDuringPregnancy:Joi.number().required().description('Weight Gain During Pregnancy').example('18'),
-        waistCircumference:Joi.number().required().description('Waist Circumference').example('50'), 
-        bmi:Joi.number().required().description('BMI').example('38'),
-        insulinLevels:Joi.number().required().description('Insulin Levels').example('40'), 
-        cholesterolLevels:Joi.number().required().description('Cholesterol Levels').example('201'),
-        digestiveEnzymeLevels:Joi.number().required().description('Digestive Enzyme Levels').example('56'),
-        pulmonaryFunction:Joi.number().required().description('Pulmonary Function').example('76')
-    }),
-    prediction:Joi.object({
-        label:Joi.string().required().description('Prediction result').example('Steroid-Induced Diabetes'),
-        probability:Joi.number().required().description('Probability of prediction').example('99.9')
-    })
-});
 exports.getPredictionParamSchema = Joi.object({
     id: Joi.string()
 });
-exports.getPpredictionResponseSchema = Joi.object({
-    message: Joi.string()
+exports.getPredictionResponseSchema = Joi.object({
+    message: Joi.string(),
+    predictions:Joi.array().items(Joi.object({
+            input:Joi.object({
+                age:Joi.number().required(), 
+                bloodGlucoseLevels:Joi.number().required(), 
+                bloodPressure:Joi.number().required(), 
+                weightGainDuringPregnancy:Joi.number().required(),
+                waistCircumference:Joi.number().required(), 
+                bmi:Joi.number().required(),
+                insulinLevels:Joi.number().required(), 
+                cholesterolLevels:Joi.number().required(),
+                digestiveEnzymeLevels:Joi.number().required(),
+                pulmonaryFunction:Joi.number().required()
+            }).required(),
+            prediction:Joi.object({
+                label:Joi.string().required(),
+                probability:Joi.number().required()
+            }).required(),
+            createdAt:Joi.date().iso().required()
+        })).example([
+            { input: { 
+                age: 44, 
+                bloodGlucoseLevels: 168, 
+                bloodPressure: 124, 
+                weightGainDuringPregnancy: 18, 
+                waistCircumference: 50, 
+                bmi: 38, insulinLevels: 40, 
+                cholesterolLevels: 201, 
+                digestiveEnzymeLevels: 56, 
+                pulmonaryFunction: 76 
+            }, 
+            prediction: { 
+                label: 'Wolcott-Rallison Syndrome', 
+                probability: 0.37721750140190125 
+            }, 
+            createdAt: '2024-12-01T05:06:26.654Z' 
+            },{ input: { 
+                age: 44, 
+                bloodGlucoseLevels: 168, 
+                bloodPressure: 124, 
+                weightGainDuringPregnancy: 18, 
+                waistCircumference: 50, 
+                bmi: 38, 
+                insulinLevels: 40, 
+                cholesterolLevels: 201, 
+                digestiveEnzymeLevels: 56, 
+                pulmonaryFunction: 76 
+            }, 
+            prediction: { 
+                label: 'Wolcott-Rallison Syndrome', 
+                probability: 0.37721750140190125 
+            }, 
+            createdAt: '2024-12-01T05:06:26.654Z' 
+        }])
 }).label('Result');
