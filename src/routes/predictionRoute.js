@@ -1,5 +1,5 @@
 const { postPrediction, getPredictions } = require('../handlers/predictionControler');
-const { predictionSchema, predictionResponseSchema, predictionParamSchema } = require('../validators');
+const { predictionResponseSchema, postPredictionParamSchema, postPredictionSchema } = require('../validators');
 
 exports.predictionRoutes = [
     {
@@ -11,8 +11,8 @@ exports.predictionRoutes = [
             notes: 'Store Prediction from ML Server',
             tags: ['api','prediction'],
             validate: {
-                payload: predictionSchema,
-                params: predictionParamSchema
+                payload: postPredictionSchema,
+                params: postPredictionParamSchema
             },
             plugins: {
                 'hapi-swagger': {

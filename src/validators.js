@@ -18,6 +18,7 @@ exports.loginResponseSchema = Joi.object({
     error: Joi.string(),
     message: Joi.string(),
     loginResult: Joi.object({
+        userId: Joi.string(),
         name: Joi.string(),
         email: Joi.string(),
         token: Joi.string()
