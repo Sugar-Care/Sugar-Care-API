@@ -68,8 +68,27 @@ const init = async () => {
       info: {
           title: 'SUCA API Documentation',
           version: Pack.version
-      }, 
+      },
+      basePath: '/suca-api',
+      pathPrefixSize: 1,
       documentationPath: '/suca-docs',
+      sortEndpoints:'ordered',
+      sortTags : 'unsorted',
+      grouping:'tags',
+      tags: [
+        {
+            name: 'prediction',
+            description: 'Prediction Group',
+            externalDocs: {
+              description: 'Find out more about storage',
+              url: 'http://example.org'
+          }
+        },
+        {
+            name: 'reglog',
+            description: 'Reglog Group',
+        },
+    ],
       debug:true
     };
     await server.register([

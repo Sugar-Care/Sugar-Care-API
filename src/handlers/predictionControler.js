@@ -1,15 +1,15 @@
 const { storePrediction } = require('../services/predictionService');
-const { predictionSchema } = require('../validators');
+const { postPredictionSchema } = require('../validators');
 
 exports.postPrediction = async (request, h) => {
     try {
-        const { error } = predictionSchema.validate(request.payload);
+        const { error } = postPredictionSchema.validate(request.payload);
 
         if (error) {
             throw new Error(error);
         }
 
-        const res = await storePrediction(request.payload);
+        const res = await storePrediction(request.payload,request.params);
 
         return h.response({ message:res.message }).code(200);
     } catch (err) {

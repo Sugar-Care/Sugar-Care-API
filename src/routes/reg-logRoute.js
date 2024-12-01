@@ -4,17 +4,18 @@ const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema
 exports.reqLogRoutes = [
     {
         method: 'POST',
-        path: '/register',
+        path: '/suca-api/register',
         options: {
             auth: false,
             description: 'Register',
             notes: 'Register User Account',
-            tags: ['api'],
+            tags: ['api','reglog'],
             validate: {
                 payload: registerSchema
             },
             plugins: {
                 'hapi-swagger': {
+                    order:1,
                     responses: {
                         200: {
                             description: 'Berhasil',
@@ -28,17 +29,18 @@ exports.reqLogRoutes = [
     },
     {
         method: 'POST',
-        path: '/login',
+        path: '/suca-api/login',
         options: {
             auth: false,
             description: 'Login',
             notes: 'Login User Account',
-            tags: ['api'],
+            tags: ['api','reglog'],
             validate: {
                 payload: loginSchema
             },
             plugins: {
                 'hapi-swagger': {
+                    order:2,
                     responses: {
                         200: {
                             description: 'Berhasil',

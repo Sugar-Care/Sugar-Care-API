@@ -1,20 +1,22 @@
 const { postPrediction, getPredictions } = require('../handlers/predictionControler');
-const { predictionSchema, predictionResponseSchema } = require('../validators');
+const { predictionSchema, predictionResponseSchema, predictionParamSchema } = require('../validators');
 
 exports.predictionRoutes = [
     {
         method: 'POST',
-        path: '/prediction',
+        path: '/suca-api/predictions/{userId}',
         options: {
             auth: false,
             description: 'Prediction',
             notes: 'Store Prediction from ML Server',
-            tags: ['api'],
+            tags: ['api','prediction'],
             validate: {
-                payload: predictionSchema
+                payload: predictionSchema,
+                params: predictionParamSchema
             },
             plugins: {
                 'hapi-swagger': {
+                    order:2,
                     responses: {
                         200: {
                             description: 'Berhasil',
@@ -28,12 +30,17 @@ exports.predictionRoutes = [
     },
     {
         method: 'GET',
-        path: '/predictions',
+        path: '/suca-api/predictions/{userId}',
         options: {
             auth: false,
             description: 'Prediction',
-            notes: 'GET Prediction from database',
-            tags: ['api'],
+            notes: 'GET Predictions from database',
+            tags: ['api','prediction'],
+            plugins: {
+                'hapi-swagger': {
+                    order:1
+                }
+            },
             handler: getPredictions
         }
     }
