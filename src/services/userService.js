@@ -47,4 +47,30 @@ const login = async (email, password) => {
     return { error: false, message: 'success', loginResult };
 };
 
-module.exports = { register, login };
+const editProfile = async (userId, updatedFields) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        const userDoc = await usersCollection.doc(userId).get();
+
+        if (!userDoc.exists) {
+            throw new Error('User not found');
+        }
+
+        const updatedData = {};
+
+        if (updatedFields.name) updatedData.name = updatedFields.name;
+        if (updatedFields.email) updatedData.email = updatedFields.email;
+        if (updatedFields.password) {
+            updatedData.password = await bcrypt.hash(updatedFields.password, 10);
+        }
+
+        await usersCollection.doc(userId).update(updatedData);
+
+        return { message: 'Profile updated successfully', updatedFields: updatedData };
+    } catch (error) {
+        throw error;
+    }
+};
+
+module.exports = { register, login, editProfile };
+

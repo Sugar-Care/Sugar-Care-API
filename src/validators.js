@@ -25,6 +25,23 @@ exports.loginResponseSchema = Joi.object({
     })
 }).label('Result');
 
+//UpdateProfile
+exports.profileSchema = Joi.object({
+    name: Joi.string().optional().description('Name of the user').example('John Doe'),
+    email: Joi.string().email().optional().description('Email address of the user').example('john.doe@example.com'),
+    password: Joi.string().min(6).optional().description('New password for the user').example('newpassword123')
+}).or('name', 'email', 'password').description('At least one field (name, email, or password) must be provided');
+
+exports.profileResponseSchema = Joi.object({
+    error: Joi.string(),
+    message: Joi.string(),
+    updatedFields: Joi.object({
+        name: Joi.string().optional().example('Updated Name'),
+        email: Joi.string().optional().example('updated@example.com'),
+        password: Joi.string().optional().example('$2b$10$...').description('Hashed password')
+    }).optional()
+}).label('Result');
+
 // Post Prediction
 exports.postPredictionSchema = Joi.object({
     input:Joi.object({

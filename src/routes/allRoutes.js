@@ -1,8 +1,8 @@
 const { predictionRoutes } = require("./predictionRoute.js");
-const { reqLogRoutes } = require("./reg-logRoute");
+const { UserRoute } = require("./UserRoute.js");
 
 const routes = [
-    ...reqLogRoutes,
+    ...UserRoute,
     ...predictionRoutes
 ];
 

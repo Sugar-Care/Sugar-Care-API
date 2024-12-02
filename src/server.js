@@ -16,7 +16,7 @@ const init = async () => {
         port: process.env.PORT || 5000,
         host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0'
     });
-    
+
     server.register({
       plugin: hapiRateLimit,
       options: {
