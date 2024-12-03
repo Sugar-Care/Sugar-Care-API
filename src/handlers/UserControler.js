@@ -1,4 +1,4 @@
-const { registerSchema, loginSchema } = require('../validators');
+const { registerSchema, loginSchema, profileSchema } = require('../validators');
 const userService = require('../services/userService');
 
 const register = async (request, h) => {
@@ -14,7 +14,7 @@ const register = async (request, h) => {
 
         return h.response(result).code(201);
     } catch (err) {
-        return h.response({ error: err.message }).code(400);
+        return h.response({ error: true, message: err.message }).code(400);
     }
 };
 
@@ -31,26 +31,30 @@ const login = async (request, h) => {
 
         return h.response(result).code(200);
     } catch (err) {
-        return h.response({ error: err.message }).code(400);
+        return h.response({ error: true, message: err.message }).code(400);
     }
 };
 
 const editProfile = async (request, h) => {
     try {
-        const { id } = request.params; // ID pengguna dari URL
-        const { name, email, password } = request.payload;
+        const { error } = profileSchema.validate(request.payload);
 
-        if (!name && !email && !password) {
-            throw new Error('At least one field (name, email, or password) must be provided');
+        if (error) {
+            throw new Error(error.details[0].message);
         }
 
-        const result = await userService.editProfile(id, { name, email, password });
+        const { userId } = request.params;
+        const { name, password } = request.payload;
+
+        const result = await userService.editProfile(userId, name, password);
 
         return h.response(result).code(200);
-    } catch (err) {
-        return h.response({ error: err.message }).code(400);
+    } catch (error) {
+        return h.response({ 
+            error: true, 
+            message: error.message 
+        }).code(400);
     }
 };
 
 module.exports = { register, login, editProfile };
-
