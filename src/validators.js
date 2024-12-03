@@ -27,19 +27,16 @@ exports.loginResponseSchema = Joi.object({
 
 //UpdateProfile
 exports.profileSchema = Joi.object({
-    name: Joi.string().optional().description('Name of the user').example('John Doe'),
-    email: Joi.string().email().optional().description('Email address of the user').example('john.doe@example.com'),
-    password: Joi.string().min(6).optional().description('New password for the user').example('newpassword123')
-}).or('name', 'email', 'password').description('At least one field (name, email, or password) must be provided');
+    name: Joi.string().optional().min(1).description('Name of the user').example('John Doe'),
+    password: Joi.string().optional().min(6).description('New password for the user').example('newpassword123')
+}).min(1).messages({
+    'object.min': 'At least one field (name or password) must be provided'
+});
 
+// Profile Response Schema
 exports.profileResponseSchema = Joi.object({
-    error: Joi.string(),
-    message: Joi.string(),
-    updatedFields: Joi.object({
-        name: Joi.string().optional().example('Updated Name'),
-        email: Joi.string().optional().example('updated@example.com'),
-        password: Joi.string().optional().example('$2b$10$...').description('Hashed password')
-    }).optional()
+    message: Joi.string().required().description('API response message').example('User updated successfully!'),
+    updatedFields: Joi.array().items(Joi.string()).optional().description('Fields that were updated')
 }).label('Result');
 
 // Post Prediction
