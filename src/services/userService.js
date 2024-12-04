@@ -8,7 +8,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const register = async (name, email, password) => {
     const userDoc = await usersCollection.where('email', '==', email).get();
 
-    if (userDoc.docs[0].exists) {
+    if (userDoc.docs[0]) {
         throw new Error('User already exists');
     }
 
@@ -25,7 +25,7 @@ const register = async (name, email, password) => {
 const login = async (email, password) => {
     const userDoc = await usersCollection.where('email', '==', email).get();
 
-    if (!userDoc.docs[0].exists) {
+    if (!userDoc.docs[0]) {
         return { error: true, message: 'Invalid email or password', loginResult: null };
     }
 
