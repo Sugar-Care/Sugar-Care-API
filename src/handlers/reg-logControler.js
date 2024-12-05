@@ -35,4 +35,26 @@ const login = async (request, h) => {
     }
 };
 
-module.exports = {register,login};
+const editProfile = async (request, h) => {
+    try {
+        const { error } = profileSchema.validate(request.payload);
+
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        const { userId } = request.params;
+        const { name, password } = request.payload;
+
+        const result = await userService.editProfile(userId, name, password);
+
+        return h.response(result).code(200);
+    } catch (error) {
+        return h.response({ 
+            error: true, 
+            message: error.message 
+        }).code(400);
+    }
+};
+
+module.exports = { register, login, editProfile };
