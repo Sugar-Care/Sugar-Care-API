@@ -25,7 +25,6 @@ exports.loginResponseSchema = Joi.object({
     })
 }).label('Result');
 
-
 //UpdateProfile
 exports.profileSchema = Joi.object({
     name: Joi.string().optional().min(1).description('Name of the user').example('John Doe'),
