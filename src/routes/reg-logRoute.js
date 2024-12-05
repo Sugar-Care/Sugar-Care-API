@@ -52,4 +52,29 @@ exports.reqLogRoutes = [
             handler: userHandler.login
         }
     },
+    {
+        method: 'PUT',
+        path: '/suca-api/profile/{userId}',
+        options: {
+            auth: false,
+            description: 'Edit Profile',
+            notes: 'Update user profile information',
+            tags: ['api', 'profile'],
+            validate: {
+                payload: profileSchema,
+            },
+            plugins: {
+                'hapi-swagger': {
+                    order: 3,
+                    responses: {
+                        200: {
+                            description: 'Profile successfully updated',
+                            schema: profileResponseSchema
+                        }
+                    }
+                }
+            },
+            handler: userHandler.editProfile,
+        }
+    },
 ];
