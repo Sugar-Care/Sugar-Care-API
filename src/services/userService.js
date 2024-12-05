@@ -47,4 +47,33 @@ const login = async (email, password) => {
     return { error: false, message: 'success', loginResult };
 };
 
-module.exports = { register, login };
+const editProfile = async (userId, name, password) => {
+    
+    if (!userId || typeof userId !== 'string') {
+        throw new Error('Invalid user ID');
+    }
+    const userDocRef = usersCollection.doc(userId);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+        throw new Error('User not found!');
+    }
+    const updates = {};
+    if (name) {
+        updates.name = name;
+    }
+    if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updates.password = hashedPassword;
+    }
+    if (Object.keys(updates).length > 0) {
+        await userDocRef.update(updates);
+    }
+
+    return { 
+        message: 'User updated successfully!', 
+        updatedFields: Object.keys(updates)
+    };
+};
+
+module.exports = { register, login, editProfile };
