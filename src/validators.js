@@ -25,6 +25,19 @@ exports.loginResponseSchema = Joi.object({
     })
 }).label('Result');
 
+
+//UpdateProfile
+exports.profileSchema = Joi.object({
+    name: Joi.string().optional().min(1).description('Name of the user').example('John Doe'),
+    password: Joi.string().optional().min(6).description('New password for the user').example('newpassword123')
+}).min(1).messages({
+    'object.min': 'At least one field (name or password) must be provided'
+});
+exports.profileResponseSchema = Joi.object({
+    message: Joi.string().required().description('API response message').example('User updated successfully!'),
+    updatedFields: Joi.array().items(Joi.string()).optional().description('Fields that were updated')
+}).label('Result');
+
 // Post Prediction
 exports.postPredictionSchema = Joi.object({
     input:Joi.object({
