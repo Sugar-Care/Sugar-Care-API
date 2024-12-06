@@ -57,7 +57,7 @@ exports.postPredictionSchema = Joi.object({
     })
 });
 exports.postPredictionParamSchema = Joi.object({
-    id: Joi.string()
+    userId: Joi.string()
 });
 exports.postPredictionResponseSchema = Joi.object({
     message: Joi.string()
@@ -65,7 +65,7 @@ exports.postPredictionResponseSchema = Joi.object({
 
 // Get Predictions
 exports.getPredictionParamSchema = Joi.object({
-    id: Joi.string()
+    userId: Joi.string()
 });
 exports.getPredictionResponseSchema = Joi.object({
     message: Joi.string(),
