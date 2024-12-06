@@ -1,5 +1,5 @@
 const userHandler = require('../handlers/reg-logControler');
-const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema } = require('../validators');
+const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema,profileSchema,profileResponseSchema } = require('../validators');
 
 exports.reqLogRoutes = [
     {
