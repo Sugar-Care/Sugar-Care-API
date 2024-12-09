@@ -17,7 +17,14 @@ exports.retrievePredictions = async (params) => {
 
     const snapshot = await usersCollection.doc(params.userId).collection('predictions').get()
 
-    const userPredictions = snapshot.docs.map(doc => doc.data())
-
+    const userPredictions = snapshot.docs.map(doc => {return {predictId:doc.id, data:doc.data()}})
+    
     return { message:"Predictions retrieved successfully",predictions:userPredictions };
+};
+
+exports.terminatePrediction = async (params) => {
+
+    await usersCollection.doc(params.userId).collection('predictions').doc(params.predictId).delete()
+
+    return { message:"Predictions terminated successfully" };
 };

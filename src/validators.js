@@ -68,8 +68,10 @@ exports.getPredictionParamSchema = Joi.object({
     userId: Joi.string()
 });
 exports.getPredictionResponseSchema = Joi.object({
-    message: Joi.string(),
+    message: Joi.string().example('Eh kok bisa'),
     predictions:Joi.array().items(Joi.object({
+        predictId:Joi.string(),
+        data:Joi.object({
             input:Joi.object({
                 age:Joi.number().required(), 
                 bloodGlucoseLevels:Joi.number().required(), 
@@ -87,8 +89,10 @@ exports.getPredictionResponseSchema = Joi.object({
                 probability:Joi.number().required()
             }).required(),
             createdAt:Joi.date().iso().required()
-        })).example([
-            { input: { 
+        })})).example([{
+            predictId:"IniIdYangTidakBisaDiTiru",
+            data:{ 
+            input: { 
                 age: 44, 
                 bloodGlucoseLevels: 168, 
                 bloodPressure: 124, 
@@ -103,23 +107,15 @@ exports.getPredictionResponseSchema = Joi.object({
                 label: 'Wolcott-Rallison Syndrome', 
                 probability: 0.37721750140190125 
             }, 
-            createdAt: '2024-12-01T05:06:26.654Z' 
-            },{ input: { 
-                age: 44, 
-                bloodGlucoseLevels: 168, 
-                bloodPressure: 124, 
-                weightGainDuringPregnancy: 18, 
-                waistCircumference: 50, 
-                bmi: 38, 
-                insulinLevels: 40, 
-                cholesterolLevels: 201, 
-                digestiveEnzymeLevels: 56, 
-                pulmonaryFunction: 76 
-            }, 
-            prediction: { 
-                label: 'Wolcott-Rallison Syndrome', 
-                probability: 0.37721750140190125 
-            }, 
-            createdAt: '2024-12-01T05:06:26.654Z' 
-        }])
+            createdAt: '2024-12-01T05:06:26.654Z'
+        }}])
+}).label('Result');
+
+// Delete Predictions
+exports.deletePredictionParamSchema = Joi.object({
+    userId: Joi.string(),
+    predictId: Joi.string()
+});
+exports.deletePredictionResponseSchema = Joi.object({
+    message: Joi.string()
 }).label('Result');
