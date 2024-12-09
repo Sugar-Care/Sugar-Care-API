@@ -7,7 +7,7 @@ def inference(inputData):
     prediction = model.predict(np.array(inputData).reshape(1, 10))
     predictionClass = tf.argmax(prediction, axis=1)
 
-    class_labels = ['Steroid-Induced Diabetes','Neonatal Diabetes Mellitus (NDM)','Prediabetic','Type 1 Diabetes','Wolfram Syndrome','LADA','Type 2 Diabetes','Wolcott-Rallison Syndrome','Secondary Diabetes','Type 3c Diabetes (Pancreatogenic Diabetes)','Gestational Diabetes','Cystic Fibrosis-Related Diabetes (CFRD)','MODY']
+    class_labels = ['Cystic Fibrosis-Related Diabetes (CFRD)','Gestational Diabetes','LADA','MODY','Neonatal Diabetes Mellitus (NDM)','Prediabetic','Secondary Diabetes','Steroid-Induced Diabetes','Type 1 Diabetes','Type 2 Diabetes','Type 3c Diabetes (Pancreatogenic Diabetes)','Wolcott-Rallison Syndrome','Wolfram Syndrome']
 
     predictLabel = class_labels[predictionClass.numpy()[0]]
     predictProb = tf.reduce_max(prediction, axis=1).numpy().tolist()
