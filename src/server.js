@@ -69,7 +69,6 @@ const init = async () => {
           title: 'SUCA API Documentation',
           version: Pack.version
       },
-      basePath: '/suca-api',
       pathPrefixSize: 1,
       documentationPath: '/suca-docs',
       sortEndpoints:'ordered',
@@ -77,17 +76,21 @@ const init = async () => {
       grouping:'tags',
       tags: [
         {
-            name: 'prediction',
-            description: 'Prediction Group',
-            externalDocs: {
-              description: 'Find out more about storage',
-              url: 'http://example.org'
+          name: 'Predict',
+          description: 'Predict API',
+          externalDocs: {
+            description: 'Base url for api',
+            url: 'https://sugar-care-api-predict-510866273403.asia-southeast2.run.app'
           }
         },
         {
-            name: 'reglog',
-            description: 'Reglog Group',
+            name: 'Prediction',
+            description: 'Predictions Collection'
         },
+        {
+            name: 'Profile',
+            description: 'Users Collection',
+        }
     ],
       debug:true
     };

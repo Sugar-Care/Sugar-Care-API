@@ -1,4 +1,38 @@
 const Joi = require('joi');
+
+exports.customFail = (request, h, error) => { 
+    const validationError = error.details ? error.details[0].message+', ada yang salah kayaknya' : 'gak tau salahnya apa'; 
+    return h.response({ message: validationError }).code(400).takeover();
+};
+
+//Predict
+exports.postPredictSchema = Joi.object({
+    input:Joi.object({
+        age:Joi.number().required().description('Age').example('44'), 
+        bloodGlucoseLevels:Joi.number().required().description('Blood Glucose Levels').example('168'), 
+        bloodPressure:Joi.number().required().description('Blood Pressure').example('124'), 
+        weightGainDuringPregnancy:Joi.number().required().description('Weight Gain During Pregnancy').example('18'),
+        waistCircumference:Joi.number().required().description('Waist Circumference').example('50'), 
+        bmi:Joi.number().required().description('BMI').example('38'),
+        insulinLevels:Joi.number().required().description('Insulin Levels').example('40'), 
+        cholesterolLevels:Joi.number().required().description('Cholesterol Levels').example('201'),
+        digestiveEnzymeLevels:Joi.number().required().description('Digestive Enzyme Levels').example('56'),
+        pulmonaryFunction:Joi.number().required().description('Pulmonary Function').example('76')
+    })
+});
+exports.postPredictParamSchema = Joi.object({
+    userId: Joi.string()
+});
+exports.postPredictResponseSchema = Joi.object({
+    result:Joi.object({
+        label:Joi.string().example("Secondary Diabetes"),
+        message:Joi.string().example("Prediction stored successfully"),
+        probability:Joi.number().example(0.9999982118606567)
+    }),
+    time_request:Joi.number().example(1733725812),
+    version:Joi.string().example("0.1")
+}).label('Result');
+
 // Register
 exports.registerSchema = Joi.object({
     name: Joi.string().required().description('Username for the user').example('john_doe'),
@@ -25,7 +59,7 @@ exports.loginResponseSchema = Joi.object({
     })
 }).label('Result');
 
-//UpdateProfile
+//Update Profile
 exports.profileSchema = Joi.object({
     name: Joi.string().optional().min(1).description('Name of the user').example('John Doe'),
     password: Joi.string().optional().min(6).description('New password for the user').example('newpassword123')

@@ -48,7 +48,6 @@ const login = async (email, password) => {
 };
 
 const editProfile = async (userId, name, password) => {
-    
     if (!userId || typeof userId !== 'string') {
         throw new Error('Invalid user ID');
     }

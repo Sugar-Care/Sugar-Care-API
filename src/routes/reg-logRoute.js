@@ -1,5 +1,5 @@
 const userHandler = require('../handlers/reg-logControler');
-const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema,profileSchema,profileResponseSchema } = require('../validators');
+const { registerSchema, loginSchema, registerResponseSchema, loginResponseSchema,profileSchema,profileResponseSchema, customFail } = require('../validators');
 
 exports.reqLogRoutes = [
     {
@@ -9,9 +9,10 @@ exports.reqLogRoutes = [
             auth: false,
             description: 'Register',
             notes: 'Register User Account',
-            tags: ['api','reglog'],
+            tags: ['api','Profile'],
             validate: {
-                payload: registerSchema
+                payload: registerSchema,
+                failAction: customFail
             },
             plugins: {
                 'hapi-swagger': {
@@ -34,9 +35,10 @@ exports.reqLogRoutes = [
             auth: false,
             description: 'Login',
             notes: 'Login User Account',
-            tags: ['api','reglog'],
+            tags: ['api','Profile'],
             validate: {
-                payload: loginSchema
+                payload: loginSchema,
+                failAction: customFail
             },
             plugins: {
                 'hapi-swagger': {
@@ -59,9 +61,10 @@ exports.reqLogRoutes = [
             auth: false,
             description: 'Edit Profile',
             notes: 'Update user profile information',
-            tags: ['api', 'profile'],
+            tags: ['api', 'Profile'],
             validate: {
                 payload: profileSchema,
+                failAction: customFail
             },
             plugins: {
                 'hapi-swagger': {

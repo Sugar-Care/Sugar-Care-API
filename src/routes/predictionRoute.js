@@ -1,5 +1,5 @@
 const { postPrediction, getPredictions, deletePredictions } = require('../handlers/predictionControler');
-const { postPredictionParamSchema, postPredictionSchema, postPredictionResponseSchema, getPredictionParamSchema, getPredictionResponseSchema, deletePredictionResponseSchema, deletePredictionParamSchema } = require('../validators');
+const { postPredictionParamSchema, postPredictionSchema, postPredictionResponseSchema, getPredictionParamSchema, getPredictionResponseSchema, deletePredictionResponseSchema, deletePredictionParamSchema, customFail } = require('../validators');
 
 exports.predictionRoutes = [
     {
@@ -9,14 +9,15 @@ exports.predictionRoutes = [
             auth: false,
             description: 'Prediction',
             notes: 'Store Prediction from ML Server',
-            tags: ['api','prediction'],
+            tags: ['api','Prediction'],
             validate: {
                 payload: postPredictionSchema,
-                params: postPredictionParamSchema
+                params: postPredictionParamSchema,
+                failAction: customFail
             },
             plugins: {
                 'hapi-swagger': {
-                    order:2,
+                    order:1,
                     responses: {
                         200: {
                             description: 'Berhasil Simpen',
@@ -35,13 +36,14 @@ exports.predictionRoutes = [
             auth: false,
             description: 'Prediction',
             notes: 'GET Predictions from database',
-            tags: ['api','prediction'],
+            tags: ['api','Prediction'],
             validate: {
-                params: getPredictionParamSchema
+                params: getPredictionParamSchema,
+                failAction: customFail
             },
             plugins: {
                 'hapi-swagger': {
-                    order:1,
+                    order:2,
                     responses: {
                         200: {
                             description: 'Berhasil Ngambil',
@@ -60,13 +62,13 @@ exports.predictionRoutes = [
             auth: false,
             description: 'Prediction',
             notes: 'GET Predictions from database',
-            tags: ['api','prediction'],
+            tags: ['api','Prediction'],
             validate: {
                 params: deletePredictionParamSchema
             },
             plugins: {
                 'hapi-swagger': {
-                    order:1,
+                    order:3,
                     responses: {
                         200: {
                             description: 'Berhasil Ngapus',
