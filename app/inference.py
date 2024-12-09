@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 def inference(inputData):
-    model = tf.keras.models.load_model('sulthan_cnn_models.keras')
+    model = tf.keras.models.load_model('zaidan_model.keras')
     
     prediction = model.predict(np.array(inputData).reshape(1, 10))
     predictionClass = tf.argmax(prediction, axis=1)
