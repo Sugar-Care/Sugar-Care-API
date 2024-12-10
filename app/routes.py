@@ -6,13 +6,24 @@ main = Blueprint('main', __name__)
 
 @main.route('/predictions/<userId>', methods=['POST'])
 def infer(userId):
-    data = request.get_json()
-    inputData = [data["input"][x] for x in data["input"]]
+    data = request.get_json()["input"]
+    inputData = [
+        data["age"], 
+        data["bloodGlucoseLevels"],
+        data["bloodPressure"],
+        data["weightGainDuringPregnancy"],
+        data["waistCircumference"],
+        data["bmi"],
+        data["insulinLevels"],
+        data["cholesterolLevels"],
+        data["digestiveEnzymeLevels"],
+        data["pulmonaryFunction"]
+    ]
 
     predictLabel,predictProb = inference(inputData)
 
     result = {
-        "input":data["input"],
+        "input":data,
         "prediction":{
             "label":predictLabel,
             "probability":predictProb
