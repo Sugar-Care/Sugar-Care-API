@@ -19,7 +19,7 @@ exports.reqLogRoutes = [
                     order:1,
                     responses: {
                         200: {
-                            description: 'Berhasil',
+                            description: 'Berhasil Register',
                             schema: registerResponseSchema
                         }
                     }
@@ -45,7 +45,7 @@ exports.reqLogRoutes = [
                     order:2,
                     responses: {
                         200: {
-                            description: 'Berhasil',
+                            description: 'Berhasil Login',
                             schema: loginResponseSchema
                         }
                     }

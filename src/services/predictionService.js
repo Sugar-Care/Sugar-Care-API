@@ -6,7 +6,7 @@ exports.storePrediction = async (payload,params) => {
     await usersCollection.doc(params.userId).collection('predictions').add({
         input:payload.input,
         prediction:payload.prediction,
-        createdAt:new Date().toISOString() 
+        createdAt:new Date().toISOString()
     });
 
     return { message: 'Prediction stored successfully' };

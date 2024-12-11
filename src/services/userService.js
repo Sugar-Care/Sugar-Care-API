@@ -16,7 +16,9 @@ const register = async (name, email, password) => {
     await usersCollection.add({ 
         name, 
         email, 
-        password: hashedPassword 
+        password: hashedPassword,
+        createdAt: new Date().toISOString(),
+        updatedAt:"This account has not been changed" 
     });
 
     return { message: 'User registered successfully' };
@@ -66,6 +68,7 @@ const editProfile = async (userId, name, password) => {
         updates.password = hashedPassword;
     }
     if (Object.keys(updates).length > 0) {
+        updates.updatedAt = new Date().toISOString();
         await userDocRef.update(updates);
     }
 

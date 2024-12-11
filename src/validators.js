@@ -1,5 +1,9 @@
 const Joi = require('joi');
 
+exports.authSchema = Joi.object({
+    'authorization': Joi.string().required()
+}).unknown()
+
 exports.customFail = (request, h, error) => { 
     const validationError = error.details ? error.details[0].message+', ada yang salah kayaknya' : 'gak tau salahnya apa'; 
     return h.response({ message: validationError }).code(400).takeover();
@@ -21,7 +25,7 @@ exports.postPredictSchema = Joi.object({
     })
 });
 exports.postPredictParamSchema = Joi.object({
-    userId: Joi.string()
+    userId: Joi.string().required()
 });
 exports.postPredictResponseSchema = Joi.object({
     result:Joi.object({
@@ -91,7 +95,7 @@ exports.postPredictionSchema = Joi.object({
     })
 });
 exports.postPredictionParamSchema = Joi.object({
-    userId: Joi.string()
+    userId: Joi.string().required()
 });
 exports.postPredictionResponseSchema = Joi.object({
     message: Joi.string()
@@ -99,7 +103,7 @@ exports.postPredictionResponseSchema = Joi.object({
 
 // Get Predictions
 exports.getPredictionParamSchema = Joi.object({
-    userId: Joi.string()
+    userId: Joi.string().required()
 });
 exports.getPredictionResponseSchema = Joi.object({
     message: Joi.string().example('Eh kok bisa'),
@@ -107,22 +111,22 @@ exports.getPredictionResponseSchema = Joi.object({
         predictId:Joi.string(),
         data:Joi.object({
             input:Joi.object({
-                age:Joi.number().required(), 
-                bloodGlucoseLevels:Joi.number().required(), 
-                bloodPressure:Joi.number().required(), 
-                weightGainDuringPregnancy:Joi.number().required(),
-                waistCircumference:Joi.number().required(), 
-                bmi:Joi.number().required(),
-                insulinLevels:Joi.number().required(), 
-                cholesterolLevels:Joi.number().required(),
-                digestiveEnzymeLevels:Joi.number().required(),
-                pulmonaryFunction:Joi.number().required()
-            }).required(),
+                age:Joi.number(), 
+                bloodGlucoseLevels:Joi.number(), 
+                bloodPressure:Joi.number(), 
+                weightGainDuringPregnancy:Joi.number(),
+                waistCircumference:Joi.number(), 
+                bmi:Joi.number(),
+                insulinLevels:Joi.number(), 
+                cholesterolLevels:Joi.number(),
+                digestiveEnzymeLevels:Joi.number(),
+                pulmonaryFunction:Joi.number()
+            }),
             prediction:Joi.object({
-                label:Joi.string().required(),
-                probability:Joi.number().required()
-            }).required(),
-            createdAt:Joi.date().iso().required()
+                label:Joi.string(),
+                probability:Joi.number()
+            }),
+            createdAt:Joi.date().iso()
         })})).example([{
             predictId:"IniIdYangTidakBisaDiTiru",
             data:{ 
@@ -145,11 +149,55 @@ exports.getPredictionResponseSchema = Joi.object({
         }}])
 }).label('Result');
 
-// Delete Predictions
+// Delete Prediction
 exports.deletePredictionParamSchema = Joi.object({
-    userId: Joi.string(),
-    predictId: Joi.string()
+    userId: Joi.string().required(),
+    predictId: Joi.string().required()
 });
 exports.deletePredictionResponseSchema = Joi.object({
+    message: Joi.string()
+}).label('Result');
+
+//Post Tracking
+exports.postTrackingSchema = Joi.object({
+    sugarIntake: Joi.number().required().description('Sugar Intake in grams').example(30),
+    bodyWeight: Joi.number().required().description('Body Weight in kilograms').example(50),
+    createdAt: Joi.date().iso().required()
+});
+exports.postTrackingParamSchema = Joi.object({
+    userId: Joi.string().required()
+});
+exports.postTrackingResponseSchema = Joi.object({
+    message: Joi.string()
+}).label('Result');
+
+// Get Tracking
+exports.getTrackingParamSchema = Joi.object({
+    userId: Joi.string().required()
+});
+exports.getTrackingResponseSchema = Joi.object({
+    message: Joi.string().example('Eh kok bisa'),
+    tracking:Joi.array().items(Joi.object({
+        trackingId:Joi.string(),
+        data:Joi.object({
+            sugarIntake: Joi.number().required(),
+            bodyWeight: Joi.number().required(),
+            createdAt: Joi.date().iso().required()
+        })})).example([{
+            trackingId:"IniIdYangTidakBisaDiTiru",
+            data:{
+                sugarIntake: 30,
+                bodyWeight: 50,
+                createdAt: '2024-12-01T05:06:26.654Z'
+            }}
+        ])
+}).label('Result');
+
+// Delete Tracking
+exports.deleteTrackingParamSchema = Joi.object({
+    userId: Joi.string().required(),
+    trackingId: Joi.string().required()
+});
+exports.deleteTrackingResponseSchema = Joi.object({
     message: Joi.string()
 }).label('Result');

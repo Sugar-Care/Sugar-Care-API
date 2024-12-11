@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
@@ -21,14 +22,16 @@ const init = async () => {
       plugin: hapiRateLimit,
       options: {
         enabled: true, // Enable rate limiting
-        userLimit: 300, // Number of requests per user per period
+        authLimit: 1,
+        authToken: 'authorization',
+        userLimit: 1667, // Number of requests per user per period
         userCache: {
-          expiresIn: 600000, // Time period in milliseconds
+          expiresIn: 86400000, // Time period in milliseconds
           segment: 'hapi-rate-limit-user'
         },
-        pathLimit: 2, // Number of requests per path per period
+        pathLimit: 60, // Number of requests per path per period
         pathCache: {
-          expiresIn: 6000, // Time period in milliseconds
+          expiresIn: 3600000, // Time period in milliseconds
           segment: 'hapi-rate-limit-path'
         },
         headers: true, // Include headers in responses
@@ -39,6 +42,7 @@ const init = async () => {
         }
       }
     });
+
     await server.register(Jwt);
 
     server.auth.strategy('jwt', 'jwt', {
@@ -52,7 +56,6 @@ const init = async () => {
         maxAgeSec: 86400,
         timeSkewSec: 15
       },
-      // eslint-disable-next-line no-unused-vars
       validate: async (artifacts, request, h) => {
         const user = await usersCollection.doc(artifacts.decoded.payload.email).get();
         if (!user) {
@@ -101,6 +104,18 @@ const init = async () => {
     ]);
 
     server.route(routes);
+    server.route([
+      {
+        method:'GET',
+        path:'/',
+        options:{
+          auth:false,
+          handler:(request, h) => {
+            return `Halo ini api database dari Sugar Care App, lihat <a href="${server.info.uri+"/suca-docs"}">dokumentasi</a>`
+          }
+        }
+      }
+    ])
   
     await server.start();
     console.log(`Server berjalan pada ${server.info.uri}`);

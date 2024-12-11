@@ -7,8 +7,8 @@ exports.predictionRoutes = [
         path: '/suca-api/predictions/{userId}',
         options: {
             auth: false,
-            description: 'Prediction',
-            notes: 'Store Prediction from ML Server',
+            description: 'Store prediction',
+            notes: 'Store Prediction when ML server\'s Predict path called',
             tags: ['api','Prediction'],
             validate: {
                 payload: postPredictionSchema,
@@ -34,8 +34,8 @@ exports.predictionRoutes = [
         path: '/suca-api/predictions/{userId}',
         options: {
             auth: false,
-            description: 'Prediction',
-            notes: 'GET Predictions from database',
+            description: 'Get user predictions',
+            notes: 'GET Predictions from database from certain user',
             tags: ['api','Prediction'],
             validate: {
                 params: getPredictionParamSchema,
@@ -60,8 +60,8 @@ exports.predictionRoutes = [
         path: '/suca-api/predictions/{userId}/{predictId}',
         options: {
             auth: false,
-            description: 'Prediction',
-            notes: 'GET Predictions from database',
+            description: 'Delete prediction',
+            notes: 'Delete certain prediction from certain user',
             tags: ['api','Prediction'],
             validate: {
                 params: deletePredictionParamSchema
