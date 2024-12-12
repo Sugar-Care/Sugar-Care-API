@@ -17,34 +17,67 @@ const init = async () => {
         port: process.env.PORT || 5000,
         host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0'
     });
-    
-    server.register({
-      plugin: hapiRateLimit,
-      options: {
-        enabled: true, // Enable rate limiting
-        authLimit: 1,
-        authToken: 'authorization',
-        userLimit: 1667, // Number of requests per user per period
-        userCache: {
-          expiresIn: 86400000, // Time period in milliseconds
-          segment: 'hapi-rate-limit-user'
-        },
-        pathLimit: 60, // Number of requests per path per period
-        pathCache: {
-          expiresIn: 3600000, // Time period in milliseconds
-          segment: 'hapi-rate-limit-path'
-        },
-        headers: true, // Include headers in responses
-        ipWhitelist: [], // Array of IPs to whitelist
-        trustProxy: false, // Whether to honor the X-Forwarded-For header
-        getIpFromProxyHeader: undefined, // Function to extract remote address from X-Forwarded-For header
-        limitExceededResponse: (request, h) => { return h.response({ message: 'Rate limit exceeded' }).code(429).takeover();
-        }
+
+    const swaggerOptions = {
+      info: {
+          title: 'SUCA API Documentation',
+          version: Pack.version
+      },
+      pathPrefixSize: 1,
+      documentationPath: '/suca-docs',
+      sortEndpoints:'ordered',
+      sortTags : 'unsorted',
+      grouping:'tags',
+      tags: [{
+          name: 'Predict',
+          description: 'Predict API',
+          externalDocs: {
+            description: 'Base url for api',
+            url: 'https://sugar-care-api-predict-510866273403.asia-southeast2.run.app'
+          }
+        },{
+            name: 'Prediction',
+            description: 'Predictions Collection'
+        },{
+            name: 'Profile',
+            description: 'Users Collection',
+        },{
+          name: 'Track',
+          description: 'Tracking Collection',
       }
-    });
+    ],
+      debug:true
+    };
 
-    await server.register(Jwt);
+    const hapiRateLimitOptions = {
+      enabled: true, // Enable rate limiting
+      userLimit: 1667, // Number of requests per user per period
+      userCache: {
+        expiresIn: 86400000, // Time period in milliseconds
+        segment: 'hapi-rate-limit-user'
+      },
+      pathLimit: 60, // Number of requests per path per period
+      pathCache: {
+        expiresIn: 3600000, // Time period in millisecondsS
+        segment: 'hapi-rate-limit-path'
+      },
+      headers: false,
+      ipWhitelist: [],
+      trustProxy: false,
+      getIpFromProxyHeader: undefined, 
+      limitExceededResponse: (request, h) => { 
+        return h.response({ message: 'Jangan spam dong' }).code(429).takeover();
+      }
+    }
 
+    await server.register([
+      Jwt,
+      Inert,
+      Vision,
+      { plugin: HapiSwagger, options: swaggerOptions },
+      { plugin: hapiRateLimit, options: hapiRateLimitOptions }
+    ]);
+    
     server.auth.strategy('jwt', 'jwt', {
       keys: process.env.JWT_SECRET,
       verify: {
@@ -58,6 +91,7 @@ const init = async () => {
       },
       validate: async (artifacts, request, h) => {
         const user = await usersCollection.doc(artifacts.decoded.payload.email).get();
+        
         if (!user) {
           return { isValid: false };
         }
@@ -66,42 +100,6 @@ const init = async () => {
     });
 
     server.auth.default('jwt');
-
-    const swaggerOptions = {
-      info: {
-          title: 'SUCA API Documentation',
-          version: Pack.version
-      },
-      pathPrefixSize: 1,
-      documentationPath: '/suca-docs',
-      sortEndpoints:'ordered',
-      sortTags : 'unsorted',
-      grouping:'tags',
-      tags: [
-        {
-          name: 'Predict',
-          description: 'Predict API',
-          externalDocs: {
-            description: 'Base url for api',
-            url: 'https://sugar-care-api-predict-510866273403.asia-southeast2.run.app'
-          }
-        },
-        {
-            name: 'Prediction',
-            description: 'Predictions Collection'
-        },
-        {
-            name: 'Profile',
-            description: 'Users Collection',
-        }
-    ],
-      debug:true
-    };
-    await server.register([
-      Inert,
-      Vision,
-      { plugin: HapiSwagger, options: swaggerOptions }
-    ]);
 
     server.route(routes);
     server.route([

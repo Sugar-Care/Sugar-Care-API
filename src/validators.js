@@ -1,9 +1,11 @@
 const Joi = require('joi');
 
+//Auth
 exports.authSchema = Joi.object({
     'authorization': Joi.string().required()
 }).unknown()
 
+//Fail
 exports.customFail = (request, h, error) => { 
     const validationError = error.details ? error.details[0].message+', ada yang salah kayaknya' : 'gak tau salahnya apa'; 
     return h.response({ message: validationError }).code(400).takeover();
