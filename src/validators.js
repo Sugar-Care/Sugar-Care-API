@@ -163,8 +163,7 @@ exports.deletePredictionResponseSchema = Joi.object({
 //Post Tracking
 exports.postTrackingSchema = Joi.object({
     sugarIntake: Joi.number().required().description('Sugar Intake in grams').example(30),
-    bodyWeight: Joi.number().required().description('Body Weight in kilograms').example(50),
-    createdAt: Joi.date().iso().required()
+    bodyWeight: Joi.number().required().description('Body Weight in kilograms').example(50)
 });
 exports.postTrackingParamSchema = Joi.object({
     userId: Joi.string().required()
