@@ -7,7 +7,7 @@ exports.storeTracking = async (payload,params) => {
     if(!user.exists){
         return { message: 'User not found' };    
     }
-    
+
     await usersCollection.doc(params.userId).collection('tracking').add({
         sugarIntake: payload.sugarIntake,
         bodyWeight: payload.bodyWeight,
@@ -24,7 +24,7 @@ exports.retrieveTracking = async (params) => {
         return { message:'No tracking found' };    
     }
 
-    const userTracking = snapshot.docs.map(doc => {return {trackingId:doc.id, data:doc.data()}})
+    const userTracking = snapshot.docs.map(doc => {return {trackingId:doc.id, data:doc.data()}}).sort((a, b) => new Date(b.data.createdAt) - new Date(a.data.createdAt)).slice(0,20)
     
     return { message:"Tracking retrieved successfully",tracking:userTracking };
 };

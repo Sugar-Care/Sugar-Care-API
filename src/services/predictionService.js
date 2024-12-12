@@ -24,7 +24,7 @@ exports.retrievePredictions = async (params) => {
         return { message:'No prediction found' };    
     }
 
-    const userPredictions = snapshot.docs.map(doc => {return {predictId:doc.id, data:doc.data()}})
+    const userPredictions = snapshot.docs.map(doc => {return {predictId:doc.id, data:doc.data()}}).sort((a, b) => new Date(b.data.createdAt) - new Date(a.data.createdAt)).slice(0,20)
     
     return { message:"Predictions retrieved successfully",predictions:userPredictions };
 };
