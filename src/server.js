@@ -56,11 +56,6 @@ const init = async () => {
         expiresIn: 86400000, // Time period in milliseconds
         segment: 'hapi-rate-limit-user'
       },
-      pathLimit: 60, // Number of requests per path per period
-      pathCache: {
-        expiresIn: 3600000, // Time period in millisecondsS
-        segment: 'hapi-rate-limit-path'
-      },
       headers: false,
       ipWhitelist: [],
       trustProxy: false,
