@@ -3,6 +3,11 @@ const { firestore } = require('../firestore');
 const usersCollection = firestore.collection('users');
 
 exports.storePrediction = async (payload,params) => {
+    const user = await usersCollection.doc(params.userId).get();
+    if(!user.exists){
+        return { message: 'User not found' };    
+    }
+
     await usersCollection.doc(params.userId).collection('predictions').add({
         input:payload.input,
         prediction:payload.prediction,

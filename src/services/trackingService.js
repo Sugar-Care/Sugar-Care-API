@@ -3,6 +3,11 @@ const { firestore } = require('../firestore');
 const usersCollection = firestore.collection('users');
 
 exports.storeTracking = async (payload,params) => {
+    const user = await usersCollection.doc(params.userId).get();
+    if(!user.exists){
+        return { message: 'User not found' };    
+    }
+    
     await usersCollection.doc(params.userId).collection('tracking').add({
         sugarIntake: payload.sugarIntake,
         bodyWeight: payload.bodyWeight,
